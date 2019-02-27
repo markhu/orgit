@@ -10,7 +10,7 @@ f = open("data.json","r")
 data = json.loads(f.read())
 
 try:
-  v=sys.argv[1]
+  v=sys.argv[1].upper()
 except:
   v="undef-verb"
 
@@ -28,23 +28,44 @@ else:
 #    exit(1)
 
 def process_commands(v,o):
-  if v.upper() in "CREATE":
-      print("CREATE")
+  if v in "CREATE":
+      print("CREATE " + o)
       elements = o.split('/')
-      top = elements[0]
-      if len(elements) > 1:
-        tip = elements[1]
-      else:
-        tip = ''
-      data[top] = tip
-  elif v.upper() in "LIST":
-      print("LIST")
-      print(dict_to_lines(o))
-  elif v.upper() in "MOVE":
-      print("MOVE")
-  elif v.upper() in "DELETE":
-      print("DELETE")
+      do_create(elements)
+  elif v in "MOVE":
+      print("MOVE " + o)
+      elements = o.split(' ')  # space-delimited args
+      do_move(elements)
+  elif v in "DELETE":
+      print("DELETE " + o)
+      elements = o.split('/')
+      do_delete(elements)
   return 0
+
+def do_delete(elements):  # side-effect(s) on global data dict
+      top = elements[0]
+      data[top] = {}
+
+def do_move(elements):  # side-effect(s) on global data dict
+      top = elements[0]
+      tip = elements[len(elements)-1]
+      data[top] = tip
+
+
+def do_create(elements):  # side-effect(s) on global data dict
+      top = elements[0]
+      if len(elements) == 2:
+        tip = elements[len(elements)-1]
+        data[top] = tip
+      elif len(elements) == 3:  # ToDo: fix this kludge and properly recurse!
+        tip = elements[len(elements)-1]
+        twig = elements[len(elements)-2]
+        data[top] = {}
+        data[top][twig] = tip
+      else:
+        tip = {}
+        data[top] = tip
+
 
 def dict_to_lines(data,padding='  '):
     lines=[]
@@ -54,12 +75,20 @@ def dict_to_lines(data,padding='  '):
       if type(data[k]) is dict:
         lines.append( padding + dict_to_lines(data[k],padding + padding))
       else:
-        lines.append( padding + data[k])
+        if len(data[k]) > 1:  # childless
+          lines.append( padding + data[k])
+
     text=''
     for line in lines:
        text += "{}\n".format(line)
+
     return(text)
 
 process_commands(v,o)
-f = open("data.json","w")
-f.write(json.dumps(data)+"\n")
+
+if v in "LIST":
+  print("LIST")
+  print(dict_to_lines(o))
+else:
+  f = open("data.json","w")
+  f.write(json.dumps(data)+"\n")
