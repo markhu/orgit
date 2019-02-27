@@ -1,7 +1,7 @@
-# orgt
+# orgit
 organize items by taxonomy (logical hierarchy)
 
-This command-line script accepts the following commands:
+This command-line script `orgit.py` accepts the following commands:
 
 1. CREATE obj
 2. LIST (no args)
