@@ -6,7 +6,8 @@ import sys
 verbs=["CREATE","LIST","MOVE","DELETE"]
 
 # data={"faked":"element","el-top":{"el-mid":"child"}}
-data = json.loads(open("data.json",'r').read())
+f = open("data.json","r")
+data = json.loads(f.read())
 
 try:
   v=sys.argv[1]
@@ -48,4 +49,5 @@ def dict_to_lines(data,padding='  '):
     return(text)
 
 process_commands(v,o)
-
+f = open("data.json","w")
+f.write(json.dumps(data)+"\n")

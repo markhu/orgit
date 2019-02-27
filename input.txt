@@ -1,4 +1,3 @@
-# orgit input data
 CREATE fruits
 CREATE vegetables
 CREATE grains
