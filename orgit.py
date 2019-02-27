@@ -30,6 +30,7 @@ else:
 def process_commands(v,o):
   if v.upper() in "CREATE":
       print("CREATE")
+      data[o] = o
   elif v.upper() in "LIST":
       print("LIST")
       print(dict_to_lines(o))
