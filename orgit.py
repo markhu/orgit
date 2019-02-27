@@ -30,7 +30,13 @@ else:
 def process_commands(v,o):
   if v.upper() in "CREATE":
       print("CREATE")
-      data[o] = o
+      elements = o.split('/')
+      top = elements[0]
+      if len(elements) > 1:
+        tip = elements[1]
+      else:
+        tip = ''
+      data[top] = tip
   elif v.upper() in "LIST":
       print("LIST")
       print(dict_to_lines(o))
