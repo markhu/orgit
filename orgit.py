@@ -28,10 +28,15 @@ else:
 #    exit(1)
 
 def process_commands(v,o):
-  if v.upper() in "LIST":
+  if v.upper() in "CREATE":
+      print("CREATE")
+  elif v.upper() in "LIST":
       print("LIST")
       print(dict_to_lines(o))
-  print("process end")
+  elif v.upper() in "MOVE":
+      print("MOVE")
+  elif v.upper() in "DELETE":
+      print("DELETE")
   return 0
 
 def dict_to_lines(data,padding='  '):
